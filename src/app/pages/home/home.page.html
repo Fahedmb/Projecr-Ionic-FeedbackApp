@@ -3,58 +3,58 @@
     <ion-buttons slot="start">
 
     </ion-buttons>
-    <ion-title>Menu</ion-title>
+    <ion-title>Home</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card>
+  <ion-card *ngIf="!joinedRoom">
     <ion-card-header>
       <ion-card-title>
-        How do you feel about this part?
+        Available Rooms
       </ion-card-title>
     </ion-card-header>
+    <ion-grid>
+      <ion-row *ngFor="let room of rooms">
+        <ion-col>
+          <ion-label>{{ room.roomName }}</ion-label>
+          <ion-button (click)="joinRoom(room.id)">Join</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 
+  <ion-card *ngIf="joinedRoom">
+    <ion-card-header>
+      <ion-card-title>
+        Give Feedback
+      </ion-card-title>
+    </ion-card-header>
     <ion-grid>
       <ion-row>
         <ion-col>
           <ion-button (click)="giveFeedback('good')">
-            <ion-img
-              src="assets/icon/good.png"
-              alt="good"
-            ></ion-img>
+            <ion-img src="assets/icon/good.png" alt="good"></ion-img>
           </ion-button>
         </ion-col>
         <ion-col>
           <ion-button (click)="giveFeedback('smile')">
-            <ion-img
-              src="assets/icon/smile.png"
-              alt="smile"
-            ></ion-img>
+            <ion-img src="assets/icon/smile.png" alt="smile"></ion-img>
           </ion-button>
         </ion-col>
         <ion-col>
           <ion-button (click)="giveFeedback('mid')">
-            <ion-img
-              src="assets/icon/mid.png"
-              alt="mid"
-            ></ion-img>
+            <ion-img src="assets/icon/mid.png" alt="mid"></ion-img>
           </ion-button>
         </ion-col>
         <ion-col>
           <ion-button (click)="giveFeedback('elims')">
-            <ion-img
-              src="assets/icon/elims.png"
-              alt="elims"
-            ></ion-img>
+            <ion-img src="assets/icon/elims.png" alt="elims"></ion-img>
           </ion-button>
         </ion-col>
         <ion-col>
           <ion-button (click)="giveFeedback('weird')">
-            <ion-img
-              src="assets/icon/weird.png"
-              alt="weird"
-            ></ion-img>
+            <ion-img src="assets/icon/weird.png" alt="weird"></ion-img>
           </ion-button>
         </ion-col>
       </ion-row>
