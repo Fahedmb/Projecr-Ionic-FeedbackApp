@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonButtons, IonCard, IonCardTitle, IonCardHeader, IonRow, IonGrid, IonCol, IonImg, AlertController } from '@ionic/angular/standalone';
+import { ReactionService } from '../../services/reaction.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +17,7 @@ export class HomePage implements OnInit {
   cooldownTime: number = 10; // Cooldown time in seconds
   remainingTime: number = this.cooldownTime;
 
-  constructor(private alertCtrl: AlertController) { }
+  constructor(private alertCtrl: AlertController, private reactionService: ReactionService, private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -32,7 +34,19 @@ export class HomePage implements OnInit {
     }
 
     console.log(`User feedback: ${feedback}`);
-    // Here you can add logic to send the feedback to a server or handle it as needed
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      const presentationId = 'default'; // Use a default presentation ID
+      await this.reactionService.addReaction(presentationId, user.uid, feedback);
+    } else {
+      const alert = await this.alertCtrl.create({
+        header: 'Not Authenticated',
+        message: 'You must be logged in to give feedback.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
 
     this.isCooldown = true;
     this.startCooldown();

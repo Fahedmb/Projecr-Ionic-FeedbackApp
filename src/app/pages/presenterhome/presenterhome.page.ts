@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonImg, IonButtons, IonCard, IonCardTitle, IonCardHeader, IonGrid, IonRow, IonCol, IonButton, IonLabel } from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-presenterhome',
@@ -12,9 +13,12 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonImg, IonButtons, IonCar
 })
 export class PresenterhomePage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
+  redirectToResults() {
+    this.router.navigateByUrl('/results', { replaceUrl: true });
+  }
 }

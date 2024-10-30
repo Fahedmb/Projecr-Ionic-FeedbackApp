@@ -18,7 +18,13 @@ export const routes: Routes = [
   },
   {
     path: 'presenterhome',
-    loadComponent: () => import('./pages/presenterhome/presenterhome.page').then(m => m.PresenterhomePage)
+    loadComponent: () => import('./pages/presenterhome/presenterhome.page').then(m => m.PresenterhomePage),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'results',
+    loadComponent: () => import('./pages/results/results.page').then(m => m.ResultsPage),
+    canActivate: [AuthGuard]
   },
   {
     path: '',

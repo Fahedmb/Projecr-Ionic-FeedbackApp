@@ -15,7 +15,9 @@ export class AuthGuard implements CanActivate {
     const user = this.authService.getCurrentUser();
     if (user) {
       const userRole = await this.authService.getUserRole(user.uid);
-      if (userRole === 'audience' && state.url === '/home') {
+      if (state.url === '/results' || state.url === '/presenterhome') {
+        return true;
+      } else if (userRole === 'audience' && state.url === '/home') {
         return true;
       } else if (userRole === 'presenter' && state.url === '/presenterhome') {
         return true;
