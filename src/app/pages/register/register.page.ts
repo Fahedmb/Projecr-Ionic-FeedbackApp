@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class RegisterPage implements OnInit {
-
   credentials: FormGroup;
 
   constructor(
@@ -26,9 +25,9 @@ export class RegisterPage implements OnInit {
     this.credentials = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['', Validators.required],
-      gender: ['', Validators.required]
+      confirmPassword: ['', [Validators.required]], // Add confirmPassword field
+      gender: ['', [Validators.required]], // Add gender field
+      role: ['', [Validators.required]] // Add role field
     });
   }
 
@@ -44,21 +43,21 @@ export class RegisterPage implements OnInit {
     return this.credentials.get('confirmPassword');
   }
 
-  get role() {
-    return this.credentials.get('role');
-  }
-
   get gender() {
     return this.credentials.get('gender');
+  }
+
+  get role() {
+    return this.credentials.get('role');
   }
 
   ngOnInit() {
     this.credentials = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
-      role: ['', Validators.required],
-      gender: ['', Validators.required],
+      confirmPassword: ['', [Validators.required]], // Add confirmPassword field
+      gender: ['', [Validators.required]], // Add gender field
+      role: ['', [Validators.required]] // Add role field
     });
   }
 
@@ -66,26 +65,20 @@ export class RegisterPage implements OnInit {
     const loading = await this.loadingCtrl.create();
     await loading.present();
 
-    if (this.credentials.value.password !== this.credentials.value.confirmPassword) {
-      await loading.dismiss();
-      const alert = await this.alertCtrl.create({
-        header: 'Registration failed',
-        message: 'Passwords do not match',
-        buttons: ['OK']
-      });
-      await alert.present();
-      return;
-    }
-
     try {
-      await this.authService.signUp(this.credentials.value.email, this.credentials.value.password);
+      const userCredential = await this.authService.signUp(
+        this.credentials.value.email,
+        this.credentials.value.password,
+        this.credentials.value.role // Pass role to signUp method
+      );
       await loading.dismiss();
-      this.router.navigateByUrl('/home', { replaceUrl: true });
+      this.router.navigateByUrl('/login', { replaceUrl: true });
     } catch (error) {
+      console.error('Registration error:', error);
       await loading.dismiss();
       const alert = await this.alertCtrl.create({
         header: 'Registration failed',
-        message: 'Please check your credentials and try again',
+        message: 'Please check your details and try again',
         buttons: ['OK']
       });
       await alert.present();
@@ -93,6 +86,6 @@ export class RegisterPage implements OnInit {
   }
 
   navigateToLogin() {
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 }

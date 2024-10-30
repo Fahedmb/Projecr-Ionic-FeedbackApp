@@ -1,82 +1,45 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Register as:</ion-title>
+    <ion-title>Register</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form [formGroup]="credentials" (ngSubmit)="register()">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          What is your role?
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-radio-group formControlName="role">
-          <ion-list-header>
-            <ion-label>Role</ion-label>
-          </ion-list-header>
-          <ion-item>
-            <ion-label>Presenter</ion-label>
-            <ion-radio slot="start" value="presenter"></ion-radio>
-          </ion-item>
-          <ion-item>
-            <ion-label>Audience</ion-label>
-            <ion-radio slot="start" value="audience"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          Personal information:
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-radio-group formControlName="gender">
-          <ion-list-header>
-            <ion-label>Gender</ion-label>
-          </ion-list-header>
-          <ion-item>
-            <ion-label>Male</ion-label>
-            <ion-radio slot="start" value="male"></ion-radio>
-          </ion-item>
-          <ion-item>
-            <ion-label>Female</ion-label>
-            <ion-radio slot="start" value="female"></ion-radio>
-          </ion-item>
-        </ion-radio-group>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          Account information:
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Confirm Password</ion-label>
+      <ion-input type="password" formControlName="confirmPassword"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Gender</ion-label>
+      <ion-radio-group formControlName="gender">
         <ion-item>
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" formControlName="email"></ion-input>
-          <ion-note slot="error" *ngIf="(email?.dirty || email?.touched) && email?.invalid">Email is required</ion-note>
+          <ion-label>Male</ion-label>
+          <ion-radio slot="start" value="male"></ion-radio>
         </ion-item>
         <ion-item>
-          <ion-label position="floating">Password</ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
-          <ion-note slot="error" *ngIf="(password?.dirty || password?.touched) && password?.invalid">Password is required</ion-note>
+          <ion-label>Female</ion-label>
+          <ion-radio slot="start" value="female"></ion-radio>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Confirm password</ion-label>
-          <ion-input type="password" formControlName="confirmPassword"></ion-input>
-          <ion-note slot="error" *ngIf="(confirmPassword?.dirty || confirmPassword?.touched) && confirmPassword?.invalid">Confirm password is required</ion-note>
-        </ion-item>
-      </ion-card-content>
-    </ion-card>
-    <ion-button expand="block" color="success" type="submit" [disabled]="credentials.invalid">Register</ion-button>
-    <ion-button expand="block"  color="primary" (click)="navigateToLogin()">Login</ion-button>
+      </ion-radio-group>
+    </ion-item>
+    <ion-item>
+      <ion-label>Role</ion-label>
+      <ion-select formControlName="role" placeholder="Select One">
+        <ion-select-option value="audience">Audience</ion-select-option>
+        <ion-select-option value="presenter">Presenter</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button expand="block" type="submit" [disabled]="credentials.invalid">Register</ion-button>
+    <ion-button expand="block" color="primary" (click)="navigateToLogin()">Login</ion-button>
+    <ion-note slot="error" *ngIf="(confirmPassword?.dirty || confirmPassword?.touched) && confirmPassword?.invalid">Confirm password is required</ion-note>
   </form>
 </ion-content>

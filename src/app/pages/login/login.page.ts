@@ -4,6 +4,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule, FormBuilder, Validators } 
 import { IonicModule, LoadingController, AlertController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '../../model/User'; // Import the User interface
 
 @Component({
   selector: 'app-login',
@@ -48,10 +49,23 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     try {
-      await this.authService.signIn(this.credentials.value.email, this.credentials.value.password);
+      console.log('Attempting to sign in with:', this.credentials.value.email);
+      const userCredential = await this.authService.signIn(this.credentials.value.email, this.credentials.value.password);
+      console.log('User signed in:', userCredential);
+      const user = userCredential.user;
+      // Fetch the user's role from your database or another source
+      const userRole = await this.authService.getUserRole(user.uid); // Implement this method in AuthService
+      console.log('User role:', userRole);
       await loading.dismiss();
-      this.router.navigateByUrl('/home', { replaceUrl: true });
+      if (userRole === 'audience') {
+        console.log('Redirecting to /home');
+        this.router.navigateByUrl('/home', { replaceUrl: true });
+      } else {
+        console.log('Redirecting to /presenterhome');
+        this.router.navigateByUrl('/presenterhome', { replaceUrl: true });
+      }
     } catch (error) {
+      console.error('Sign in error:', error);
       await loading.dismiss();
       const alert = await this.alertCtrl.create({
         header: 'Sign in failed',
@@ -62,7 +76,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  navigateToRegister() {
-    this.router.navigateByUrl('/register');
+  redirectToRegister() {
+    this.router.navigateByUrl('/register', { replaceUrl: true });
   }
 }
